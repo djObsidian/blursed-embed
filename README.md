@@ -19,3 +19,17 @@ HAL_IWDG_Refresh(&hiwdg);
 > This causes problem in the Flash interface, where the FLASH_WaitForLastOperation() function fails.
 
 Like how even the hell it works? As if you shut the toilet faucet, try to flush it, and now your towel cabinet won't open because of it!
+
+### Debugger Power consumption
+
+Quite suddenly, the debugger affects the power consumption of your board. And quite significantly, as a connected Stlink v3 can easily consume up to 350 μA. I won't investigate why exactly this happens but I suspect it has something to do with Vdd measurement. Yes, when you connect to MCU you usually see something like
+```
+Log output file:   C:\Users\Admin\AppData\Local\Temp\STM32CubeProgrammer_a02828.log
+ST-LINK SN  : 0006002A4741500520383733
+ST-LINK FW  : V3J15M7B5S1
+Board       : STLINK-V3SET
+Voltage     : 3.26V
+SWD freq    : 8000 KHz
+Connect mode: Under Reset
+```
+ADCs in STM32 have pretty low input impedance, so this can explain high current draw. But I didn't prove that, it's just a suggestion. So when dealing with low power applications be sure to measure your current draw WITHOUT debugger attached physically!
