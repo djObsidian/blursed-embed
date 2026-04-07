@@ -33,3 +33,11 @@ SWD freq    : 8000 KHz
 Connect mode: Under Reset
 ```
 ADCs in STM32 have pretty low input impedance, so this can explain high current draw. But I didn't prove that, it's just a suggestion. So when dealing with low power applications be sure to measure your current draw WITHOUT debugger attached physically!
+
+## ESP32
+### FPU in ISR
+Sources:
+https://esp32.com/viewtopic.php?t=831
+https://esp32.com/viewtopic.php?t=1292
+https://www.reddit.com/r/esp32/comments/lj2nkx/just_discovered_that_you_cant_use_floats_in_isr/
+Using floating-point arithmetic in ESP32 Interrupt Service Routines (ISRs) causes crashes (Coprocessor Exception) because the FPU state isn't saved by default. It’s not exactly a little-known fact, but it’s not explicitly mentioned anywhere! And unlike other popular microcontrollers, this is a surprising detail. Currently, there’s an experimental feature that allows you to use the FPU in ISRs, but it’s better to avoid doing so
